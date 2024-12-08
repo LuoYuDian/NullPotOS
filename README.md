@@ -1,5 +1,7 @@
 # NullPotOS
 
+![NullPotOSLogo](docs/img/logo/logo.bmp)
+
 NullPotOS一个免费开源的类UNIX操作系统
 
 ## 编译与构建
