@@ -27,13 +27,36 @@
     start_:
         movl $stack_bottom, %esp
 
-        pushl %esp
-
         call _hhkmain
 
-        cli
+        // 加载GDT
+        subl $0x6, %esp
+        movl $_gdt, 2(%esp)
+        movw _gdt_limit, %ax
+        movw %ax, (%esp)
+        lgdt (%esp)
+        addl $0x6, %esp
 
-        jmp .loop
+        // 设置段寄存器
+        movw $0x10, %cx
+        movw %cx, %es
+        movw %cx, %ds
+        movw %cx, %fs
+        movw %cx, %gs
+        movw %cx, %ss
+
+        // 进入保护模式
+        pushw $0x08
+        pushl $_after_gdt
+        retf
+
+    _after_gdt:
+        pushl %ebx
+        
+        // 进入内核
+        call _kernelmain
+
+        cli
 
     .loop:
         hlt

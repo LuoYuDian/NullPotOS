@@ -3,7 +3,7 @@
 
 #include <drivers/view/vga/vga.h>
 #include <stdint.h>
-
+#include <libs/libc/string.h>
 
 #define TTY_WIDTH 80
 #define TTY_HEIGHT 25
@@ -63,6 +63,12 @@ void VGA_put_str(char* str)
 
 void VGA_scroll_up()
 {
+    size_t last_line = TTY_WIDTH * (TTY_HEIGHT - 1);
+    memcpy(buffer, buffer + TTY_WIDTH, last_line);
+    for (size_t i = 0; i < TTY_WIDTH; i++) {
+        *(buffer + i + last_line) = theme_color;
+    }
+    VGA_ROW = VGA_ROW == 0 ? 0 : VGA_ROW - 1;
 
 }
 

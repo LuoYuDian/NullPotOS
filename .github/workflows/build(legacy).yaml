@@ -1,0 +1,17 @@
+name: NullPotOS Build(Legacy)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: configure
+      run: sudo apt-get install -y nasm gcc g++ make gdb xorriso mtools grub-pc
+    - name: build
+      run: make all
