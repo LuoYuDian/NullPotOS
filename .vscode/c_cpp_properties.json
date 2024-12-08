@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "NullPotOS",
             "includePath": [
                 "${workspaceFolder}/includes/**"
             ],
