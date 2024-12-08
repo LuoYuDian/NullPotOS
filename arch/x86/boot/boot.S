@@ -29,7 +29,7 @@
 
         pushl %esp
 
-        call _hkkmain
+        call _hhkmain
 
         cli
 
