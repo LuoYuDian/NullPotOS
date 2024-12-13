@@ -1,4 +1,9 @@
-#include <arch/x86/load/gdt.h>
+// 创建于2024.12.13
+// NullPotOS x86 gdt
+// 在中国，这一天是南京大屠杀死难者国家公祭日
+// 为死者默哀!!!
+
+#include <arch/x86/load/gdt/gdt.h>
 #include <stdint.h>
 
 #define GDT_ENTRY 5
@@ -11,7 +16,7 @@ void _setgdtentry(uint32_t index, uint32_t base, uint32_t limit, uint32_t flags)
     _gdt[index] <<= 32;
     _gdt[index] |= SEG_BASE_L(base) | SEG_LIM_L(limit);
 }
-// 
+
 void _initgdt() {
     _setgdtentry(0, 0, 0, 0);
     _setgdtentry(1, 0, 0xfffff, SEG_R0_CODE);

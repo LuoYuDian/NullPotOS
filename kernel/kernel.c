@@ -2,10 +2,11 @@
 // NullPotOS 内核
 
 #include <drivers/view/vga/vga.h>
+#include <libs/libc/stdio.h>
 
 void _kernelmain()
 {
-    VGA_put_str("NullPotOS V0.03\n@Copyright LuoYuDian 2024\n");
-    VGA_put_str("You see source code at https://github/LuoYuDian/NUllPotOS !\n");
-    VGA_put_str("Welcome to use NullPotOS!\n");
+    printf("NullPotOS V0.03\n@Copyright LuoYuDian 2024\n");
+    printf("You see source code at https://github/LuoYuDian/NUllPotOS!\n");
+    printf("Welcome to use NullPotOS!\n");
 }

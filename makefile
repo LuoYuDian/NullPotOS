@@ -17,12 +17,14 @@ DEBUG_DIR := $(BUILD_DIR)/debug
 INCLUDES := $(patsubst %, -I %, $(INCLUDES_DIR))
 
 OS_NAME = NullPotOS
+OS_VERSION := 0.04
 OS_BIN = $(OS_NAME).bin
-OS_ISO = $(OS_NAME).iso
+OS_ISO = $(OS_NAME)-$(OS_VERSION).iso
 
 TIME := 0.5
 
 CC := gcc
+PP := g++
 AS := $(CC)
 
 O := -O3

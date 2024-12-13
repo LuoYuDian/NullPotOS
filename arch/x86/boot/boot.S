@@ -47,10 +47,10 @@
 
         // 进入保护模式
         pushw $0x08
-        pushl $_after_gdt
+        pushl $_aftergdt
         retf
 
-    _after_gdt:
+    _aftergdt:
         pushl %ebx
         
         // 进入内核
