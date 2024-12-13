@@ -17,11 +17,11 @@ DEBUG_DIR := $(BUILD_DIR)/debug
 INCLUDES := $(patsubst %, -I %, $(INCLUDES_DIR))
 
 OS_NAME = NullPotOS
-OS_VERSION := 0.04
+OS_VERSION := V0.04
 OS_BIN = $(OS_NAME).bin
 OS_ISO = $(OS_NAME)-$(OS_VERSION).iso
 
-TIME := 0.5
+TIME := 0.25
 
 CC := gcc
 PP := g++
@@ -30,7 +30,8 @@ AS := $(CC)
 O := -O3
 W := -Wall -Wextra
 
-CFLAGS := -std=gnu99 -ffreestanding $(O) $(W)
+CFLAGS := -std=c17 -ffreestanding $(O) $(W)
+PPFLAGS := -std=c++17 -ffreestanding $(O) $(W)
 LDFLAGS := -ffreestanding $(O) -nostdlib -m32
 
 SOURCE_FILES := $(shell find -name "*.[cS]")
@@ -75,18 +76,10 @@ $(BUILD_DIR)/$(OS_ISO): $(ISO_DIR) $(BIN_DIR)/$(OS_BIN) GRUB_TEMPLATE
 
 all: clean $(BUILD_DIR)/$(OS_ISO)
 
-all-debug: O := -O0
-all-debug: CFLAGS := -g -std=gnu99 -ffreestanding $(O) $(W) -fomit-frame-pointer
-all-debug: LDFLAGS := -ffreestanding $(O) -nostdlib -m32
-all-debug: clean $(BUILD_DIR)/$(OS_ISO)
-	@objdump -D $(BIN_DIR)/$(OS_BIN) > $(DEBUG_DIR)/dump
-
 clean:
 	@echo "\033[32m[Clean]\033[0m" ...
 	@rm -rf $(BUILD_DIR)
 
-run: all-debug
-	@echo "\033[32m[Debug]\033[0m"
-	@objcopy --only-keep-debug $(BIN_DIR)/$(OS_BIN) $(DEBUG_DIR)/kernel.dbg
-	@qemu-system-i386 -s -S -cdrom $(BUILD_DIR)/$(OS_ISO) &
-	@gdb -s $(BUILD_DIR)/kernel.dbg -ex "target remote localhost:1234"
+run: all
+	@echo "\033[32m[Run]\033[0m"
+	@qemu-system-x86_64 -cdrom $(BUILD_DIR)/$(OS_ISO)
