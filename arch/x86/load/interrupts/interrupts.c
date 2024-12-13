@@ -7,11 +7,13 @@
 #include <libs/libc/stdio.h>
 #include <drivers/view/vga/vga.h>
 
-void isr0 (isr_param* param) {
-    VGA_clear();
+void isr0 (isr_param* param) 
+{
+    printf("[PANIC] Exception (%d) CS=0x%X, EIP=0x%X", param->vector, param->cs, param->eip);
 }
 
-void interrupt_handler(isr_param* param) {
+void interrupt_handler(isr_param* param) 
+{
     switch (param->vector)
     {
         case 0:

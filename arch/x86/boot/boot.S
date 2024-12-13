@@ -37,6 +37,15 @@
         lgdt (%esp)
         addl $0x6, %esp
 
+        // 加载IDT
+        subl $0x6, %esp
+        movl $_idt, 2(%esp)
+        movw _idt_limit, %ax
+        movw %ax, (%esp)
+        lidt (%esp)
+        addl $0x6, %esp
+
+
         // 设置段寄存器
         movw $0x10, %cx
         movw %cx, %es
