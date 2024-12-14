@@ -21,4 +21,4 @@ jobs:
       with:
           -name: clean
           run: rm -rf build
-          path: NullPotOS-V0.05.iso
+          path: clean/NullPotOS-V0.05.iso
