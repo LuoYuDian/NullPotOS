@@ -17,11 +17,11 @@ DEBUG_DIR := $(BUILD_DIR)/debug
 INCLUDES := $(patsubst %, -I %, $(INCLUDES_DIR))
 
 OS_NAME = NullPotOS
-OS_VERSION := V0.04
+OS_VERSION := V0.05
 OS_BIN = $(OS_NAME).bin
 OS_ISO = $(OS_NAME)-$(OS_VERSION).iso
 
-TIME := 0.25
+TIME := 0.125
 
 CC := gcc
 PP := g++
@@ -34,7 +34,7 @@ CFLAGS := -std=c17 -ffreestanding $(O) $(W)
 PPFLAGS := -std=c++17 -ffreestanding $(O) $(W)
 LDFLAGS := -ffreestanding $(O) -nostdlib -m32
 
-SOURCE_FILES := $(shell find -name "*.[cS]")
+SOURCE_FILES := $(shell find . -name "*.[cS]" -o -name "*.cpp")
 SRC := $(patsubst ./%, $(OBJECT_DIR)/%.o, $(SOURCE_FILES))
 
 $(OBJECT_DIR):
@@ -57,10 +57,16 @@ $(OBJECT_DIR)/%.S.o: %.S
 	@$(CC) $(INCLUDES) -c $< -o $@ -m32
 	@sleep $(TIME)
 
-$(OBJECT_DIR)/%.c.o: %.c 
+$(OBJECT_DIR)/%.c.o: %.c
 	@mkdir -p $(@D)
 	@echo "\033[32m[Compiler]\033[0m" $< ...
 	@$(CC) $(INCLUDES) -c $< -o $@ $(CFLAGS) -m32
+	@sleep $(TIME)
+
+$(OBJECT_DIR)/%.cpp.o: %.cpp
+	@mkdir -p $(@D)
+	@echo "\033[32m[Compiler]\033[0m" $<...
+	@$(PP) $(INCLUDES) -c $< -o $@ $(PPFLAGS) -m32
 	@sleep $(TIME)
 
 $(BIN_DIR)/$(OS_BIN): $(OBJECT_DIR) $(BIN_DIR) $(SRC)
@@ -82,4 +88,5 @@ clean:
 
 run: all
 	@echo "\033[32m[Run]\033[0m"
-	@qemu-system-x86_64 -cdrom $(BUILD_DIR)/$(OS_ISO)
+	@qemu-system-x86_64 -S -s -cdrom $(BUILD_DIR)/$(OS_ISO)
+	@echo "\033[32m[End]\033[0m"

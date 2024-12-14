@@ -10,11 +10,10 @@ void _interrupts_kernel()
     __asm__("int $0");
 }
 
-void _kernelmain(void *info_table)
+void _kernelmain()
 {
-    (void *)info_table;
-    printf("NullPotOS V0.04\n@Copyright LuoYuDian 2024\n");
-    printf("You see source code at https://github/LuoYuDian/NUllPotOS!\n");
+    printf("NullPotOS V0.05\n@Copyright LuoYuDian 2024\n");
+    printf("You see source code at https://github.com/LuoYuDian/NUllPotOS \n");
     printf("Welcome to use NullPotOS!\n");
     printf("\n");
 
