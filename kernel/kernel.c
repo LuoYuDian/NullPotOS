@@ -3,6 +3,7 @@
 
 #include <drivers/view/vga/vga.h>
 #include <libs/libc/stdio.h>
+#include <kernel/error/error.h>
 
 void _interrupts_kernel()
 {
@@ -17,5 +18,5 @@ void _kernelmain(void *info_table)
     printf("Welcome to use NullPotOS!\n");
     printf("\n");
 
-    _interrupts_kernel();
+   _interrupts_kernel();
 }

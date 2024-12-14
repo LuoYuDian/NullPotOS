@@ -3,9 +3,9 @@
 // 在中国，这一天是南京大屠杀死难者国家公祭日
 // 为死者默哀!!!
 
-#include <arch/x86/load/idt/idt.h>
-#include <arch/x86/load/idt/types.h>
-#include <arch/x86/load/interrupts/interrupts.h>
+#include <arch/x86/asm/idt/idt.h>
+#include <arch/x86/asm/idt/types.h>
+#include <arch/x86/asm/interrupts/interrupts.h>
 #include <stdint.h>
 
 #define IDT_ENTRY 32

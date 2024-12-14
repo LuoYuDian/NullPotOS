@@ -3,7 +3,7 @@
 // 在中国，这一天是南京大屠杀死难者国家公祭日
 // 为死者默哀!!!
 
-#include <arch/x86/load/interrupts/interrupts.h>
+#include <arch/x86/asm/interrupts/interrupts.h>
 #include <libs/libc/stdio.h>
 #include <drivers/view/vga/vga.h>
 

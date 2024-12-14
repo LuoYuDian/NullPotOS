@@ -1,8 +1,8 @@
 // 创建于2024.12.8
-// NullPotOS x86 hkk
+// NullPotOS x86 hhk
 
-#include <arch/x86/load/gdt/gdt.h>
-#include <arch/x86/load/idt/idt.h>
+#include <arch/x86/asm/gdt/gdt.h>
+#include <arch/x86/asm/idt/idt.h>
 #include <drivers/view/vga/vga.h>
 
 extern void _kernelmain(); // 定义内核函数

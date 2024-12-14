@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include <libs/libc/string.h>
 
-#define TTY_WIDTH 80
-#define TTY_HEIGHT 25
+#define VGA_WIDTH 80
+#define VGA_HEIGHT 25
 
 VGA *buffer = (VGA *)0xB8000;
 
@@ -35,16 +35,16 @@ void VGA_put_char(char chr)
     }
     else 
     {
-        *(buffer + VGA_COLUMN + VGA_ROW * TTY_WIDTH) = (theme_color | chr);
+        *(buffer + VGA_COLUMN + VGA_ROW * VGA_WIDTH) = (theme_color | chr);
         VGA_COLUMN++;
-        if (VGA_COLUMN >= TTY_WIDTH) 
+        if (VGA_COLUMN >= VGA_WIDTH) 
         {
             VGA_COLUMN = 0;
             VGA_ROW++;
         }
     }
 
-    if (VGA_ROW >= TTY_HEIGHT) 
+    if (VGA_ROW >= VGA_HEIGHT) 
     {
         VGA_scroll_up();
         VGA_ROW--;
@@ -63,9 +63,9 @@ void VGA_put_str(char* str)
 
 void VGA_scroll_up()
 {
-    size_t last_line = TTY_WIDTH * (TTY_HEIGHT - 1);
-    memcpy(buffer, buffer + TTY_WIDTH, last_line);
-    for (size_t i = 0; i < TTY_WIDTH; i++) {
+    size_t last_line = VGA_WIDTH * (VGA_HEIGHT - 1);
+    memcpy(buffer, buffer + VGA_WIDTH, last_line);
+    for (size_t i = 0; i < VGA_WIDTH; i++) {
         *(buffer + i + last_line) = theme_color;
     }
     VGA_ROW = VGA_ROW == 0 ? 0 : VGA_ROW - 1;
@@ -74,11 +74,11 @@ void VGA_scroll_up()
 
 void VGA_clear()
 {
-    for (uint32_t x = 0; x < TTY_WIDTH; x++) 
+    for (uint32_t x = 0; x < VGA_WIDTH; x++) 
     {
-        for (uint32_t y = 0; y < TTY_HEIGHT; y++) 
+        for (uint32_t y = 0; y < VGA_HEIGHT; y++) 
         {
-            *(buffer + x + y * TTY_WIDTH) = theme_color;
+            *(buffer + x + y * VGA_WIDTH) = theme_color;
         }
     }
 }
