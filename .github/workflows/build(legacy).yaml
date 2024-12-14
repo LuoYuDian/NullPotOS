@@ -15,5 +15,5 @@ jobs:
       run: sudo apt-get install -y nasm gcc g++ make gdb xorriso mtools grub-pc
     - name: build
       run: make all
-      name: download
+    - name: iso
       run: cp build/NullPotOS-V0.05.iso NullPotOS-V0.05.iso
