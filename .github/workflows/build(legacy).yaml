@@ -17,3 +17,8 @@ jobs:
       run: make all
     - name: iso
       run: cp build/NullPotOS-V0.05.iso NullPotOS-V0.05.iso
+      uses: actions/checkout@v4
+      with:
+          -name: clean
+          run: rm -rf build
+          path: NullPotOS-V0.05.iso
