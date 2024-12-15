@@ -8,14 +8,23 @@
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
 
-VGA *buffer = (VGA *)0xB8000;
+VGA *buffer = (VGA *)0xB8000; // 映射显存开始地址
 
 VGA theme_color = VGA_COLOR_BLACK;
 
 uint32_t VGA_COLUMN = 0;
 uint16_t VGA_ROW = 0;
 
+void VGA_init(void* vga_buf) 
+{
+    buffer = (VGA*)vga_buf;
+    VGA_clear();
+}
 
+void VGA_set_buffer(void* vga_buf) 
+{
+    buffer = (VGA*)vga_buf;
+}
 
 void VGA_set_theme(VGA fg, VGA bg)
 {

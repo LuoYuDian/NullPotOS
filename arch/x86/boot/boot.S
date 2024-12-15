@@ -1,72 +1,57 @@
 // 创建于2024.12.8
 // NullPotOS x86 boot
-
+#define __ASM__ 1
 #include <arch/x86/boot/multiboot.h>
 
+#define MB_FLAGS    MULTIBOOT_MEMORY_INFO | MULTIBOOT_PAGE_ALIGN
+#define KPG_SIZE    24*1024
 .code32
 
 .section .header
     .align 8
-    .long MAGIC
-    .long ALI
-    .long CHECKSUM(ALI)
-    
-    .long WIDTH
-    .long HEIGHT
-    .long DEPTH
+    .long MULTIBOOT_MAGIC
+    .long MB_FLAGS
+    .long CHECKSUM(MB_FLAGS)
 
 .section .bss
+    .global multiboot_info
     .align 16
+    multiboot_info:
+        .skip 4096
     stack_bottom:
         .skip 16318, 0
     stack_top:
 
-.section .text
-    .global start_
+.section .kpg
+    .global _k_ptd
+    _k_ptd:
+        .skip KPG_SIZE, 0
 
+.section .hhkinit
+    .global start_
+    .type start_, @function
     start_:
         movl $stack_bottom, %esp
 
-        call _hhkmain
+        subl $16, %esp
 
-        // 加载GDT
-        subl $0x6, %esp
-        movl $_gdt, 2(%esp)
-        movw _gdt_limit, %ax
-        movw %ax, (%esp)
-        lgdt (%esp)
-        addl $0x6, %esp
+        movl $multiboot_info, 4(%esp)
+        movl %ebx, (%esp)
+        call _save_multiboot_info
 
-        // 加载IDT
-        subl $0x6, %esp
-        movl $_idt, 2(%esp)
-        movw _idt_limit, %ax
-        movw %ax, (%esp)
-        lidt (%esp)
-        addl $0x6, %esp
+        movl $(KPG_SIZE), 4(%esp)
+        movl $(_k_ptd - 0xC0000000), (%esp)    /* PTD物理地址 */
+        call _hhkinit
 
+        movl (%esp), %eax
+        andl $0xfffff000, %eax
+        movl %eax, %cr3
 
-        // 设置段寄存器
-        movw $0x10, %cx
-        movw %cx, %es
-        movw %cx, %ds
-        movw %cx, %fs
-        movw %cx, %gs
-        movw %cx, %ss
+        movl %cr0, %eax
+        orl $0x80000000, %eax
+        movl %eax, %cr0
 
-        // 进入保护模式
-        pushw $0x08
-        pushl $_aftergdt
-        retf
+        addl $16, %esp
 
-    _aftergdt:
-        pushl %ebx
-        
-        // 进入内核
-        call _kernelmain
-
-        cli
-
-    .loop:
-        hlt
-        jmp .loop
+        pushl $_hhkmain
+        ret

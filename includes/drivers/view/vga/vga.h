@@ -20,6 +20,8 @@ typedef unsigned short VGA;
 #define VGA_COLOR_LIGHT_BROWN 14
 #define VGA_COLOR_WHITE 15
 
+void VGA_init(void* vga_buf);
+void VGA_set_buffer(void* vga_buf);
 void VGA_set_theme(VGA fg, VGA bg);
 void VGA_put_char(char chr);
 void VGA_put_str(char* str);

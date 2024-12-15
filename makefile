@@ -30,9 +30,9 @@ AS := $(CC)
 O := -O3
 W := -Wall -Wextra
 
-CFLAGS := -std=c17 -ffreestanding $(O) $(W)
-PPFLAGS := -std=c++17 -ffreestanding $(O) $(W)
-LDFLAGS := -ffreestanding $(O) -nostdlib -m32
+CFLAGS := -std=c17 -ffreestanding $(O) $(W) -fno-pie
+PPFLAGS := -std=c++17 -ffreestanding $(O) $(W) -fno-pie
+LDFLAGS := -ffreestanding $(O) -nostdlib -m32 -fno-pie
 
 SOURCE_FILES := $(shell find . -name "*.[cS]" -o -name "*.cpp")
 SRC := $(patsubst ./%, $(OBJECT_DIR)/%.o, $(SOURCE_FILES))
@@ -88,5 +88,7 @@ clean:
 
 run: all
 	@echo "\033[32m[Run]\033[0m"
-	@qemu-system-x86_64 -S -s -cdrom $(BUILD_DIR)/$(OS_ISO)
+	@qemu-system-x86_64 -cdrom $(BUILD_DIR)/$(OS_ISO)
 	@echo "\033[32m[End]\033[0m"
+	@${MKAE} clean
+	@clear
