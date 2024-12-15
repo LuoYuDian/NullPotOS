@@ -17,7 +17,7 @@ DEBUG_DIR := $(BUILD_DIR)/debug
 INCLUDES := $(patsubst %, -I %, $(INCLUDES_DIR))
 
 OS_NAME = NullPotOS
-OS_VERSION := V0.05
+OS_VERSION := V0.06
 OS_BIN = $(OS_NAME).bin
 OS_ISO = $(OS_NAME)-$(OS_VERSION).iso
 
@@ -82,13 +82,22 @@ $(BUILD_DIR)/$(OS_ISO): $(ISO_DIR) $(BIN_DIR)/$(OS_BIN) GRUB_TEMPLATE
 
 all: clean $(BUILD_DIR)/$(OS_ISO)
 
+debug: all
+	@echo "\033[32m[Run]\033[0m"
+	@qemu-system-x86_64 -S -s -cdrom $(BUILD_DIR)/$(OS_ISO) &
+	@gdb -ex "target remote 127.0.0.1:1234"
+	@echo "\033[32m[End]\033[0m"
+	@${MKAE} clean
+	@clear
+
 clean:
 	@echo "\033[32m[Clean]\033[0m" ...
 	@rm -rf $(BUILD_DIR)
 
-run: all
-	@echo "\033[32m[Run]\033[0m"
-	@qemu-system-x86_64 -cdrom $(BUILD_DIR)/$(OS_ISO)
-	@echo "\033[32m[End]\033[0m"
-	@${MKAE} clean
-	@clear
+help:
+	@echo $(OS_NAME) makefile
+	@echo "\033[32mall\033[0m" "--> 编译 $(OS_NAME)"
+	@sleep $(TIME)
+	@echo "\033[32mclean\033[0m" "--> 清理 $(OS_NAME)"
+	@sleep $(TIME)
+	@echo "\033[32mdebug\033[0m" "--> 调试 $(OS_NAME)"

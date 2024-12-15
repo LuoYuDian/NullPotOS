@@ -26,10 +26,10 @@ NullPotOS一个免费开源的类UNIX操作系统
 make all
 ```
 
-#### 运行
+#### 调试
 
 ``` Bash
-make run
+make debug
 ```
 
 #### 也可以使用Github Actions
