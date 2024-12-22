@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "NullPotOS",
+            "includePath": [
+                "${workspaceFolder}/includes/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ]
+        }
+    ],
+    "version": 4
+}
