@@ -97,7 +97,5 @@ void _kernelmain()
 
     printf("CPU: %s\n",buf);
 
-    //printf_color(VGA_COLOR_LIGHT_RED,"[KERNEL] === Kernel Main === \n");
-
     uintptr_t k_start = vmm_v2p(&__kernel_start);
 }

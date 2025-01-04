@@ -17,9 +17,11 @@ jobs:
       run: make all
     - name: iso
       run: cp build/NullPotOS-V0.05.iso NullPotOS-V0.05.iso
-      uses: actions/checkout@v4
+      
     - name: upload
       uses: actions/upload-artifact@v4
       with:
           name: build-artifacts
           path: build/
+
+    - uses: actions/checkout@v4
