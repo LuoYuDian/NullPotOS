@@ -1,0 +1,7 @@
+build
+*.o
+*.zip
+*.elf
+*.tar.xz
+*.tar.gz
+*.iso
