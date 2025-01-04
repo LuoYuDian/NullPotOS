@@ -1,0 +1,5 @@
+menuentry "$_OS_NAME" 
+{
+	multiboot /$_OS_NAME/sys/kernel.bin
+    boot
+}
