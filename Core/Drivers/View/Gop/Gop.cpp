@@ -16,7 +16,7 @@
  */
 
 #include <Types.hpp>
-#include <Core/Drivers/Serial/Serial.hpp>
+#include <Core/Drivers/Communicate/Serial/Serial.hpp>
 #include <Firmware/Uefi/Uefi.hpp>
 #include <Core/Libs/String/String.hpp>
 #include <Core/Drivers/View/Gop/Gop.hpp>
@@ -165,9 +165,11 @@ void GopPutChar(char C,int Color)
 		for (int i = 0; i < 4; i++) GopPutChar(' ', Color);
 		return;
 	} 
-	else if (C == '\b' && Cx > 0) {
+	else if (C == '\b' && Cx > 0) 
+	{
 		Cx -= 1;
-		if (Cx == 0) {
+		if (Cx == 0) 
+		{
 			Cx = CWidth - 1;
 			if (Cy != 0) Cy -= 1;
 			if (Cy == 0) Cx = 0, Cy = 0;

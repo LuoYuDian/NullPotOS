@@ -15,7 +15,7 @@
         2025.1.20
  */
 
-#include <Core/Drivers/Serial/Serial.hpp>
+#include <Core/Drivers/Communicate/Serial/Serial.hpp>
 #include <Core/Hal/Io/Io.hpp>
 
 int InitSerial(void)

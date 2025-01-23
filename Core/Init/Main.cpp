@@ -27,6 +27,7 @@
 #include <Core/Kernel/Asm/A20/A20.hpp>
 #include <Core/Kernel/Asm/Gdt/Gdt.hpp>
 #include <Core/Kernel/Graphics/Bmp/Bmp.hpp>
+#include <Core/Drivers/Sound/Beep/Beep.hpp>
 
 // Kernel init
 extern "C" void _KernelEntry(FrameBufferConfig &Fbc,EFI_SYSTEM_TABLE &SystemTable,BOOT_CONFIG *BootConfig)
@@ -40,6 +41,12 @@ extern "C" void _KernelEntry(FrameBufferConfig &Fbc,EFI_SYSTEM_TABLE &SystemTabl
     // Print kernel version
     PrintColor(GOP_COLOR_CYAN, "NullPotOS %s\n", KERNEL_VERSION);
 	PrintColor(GOP_COLOR_CYAN, PROJECKT_COPY);
+
+    // Enable beep
+    EnableBeep();
+
+    // Disable beep
+    DisableBeep();
 
     // Enable A20
     EnableA20();
