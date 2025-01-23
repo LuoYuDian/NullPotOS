@@ -1,0 +1,1 @@
+# NullPotOS Bootloader Dictionary
