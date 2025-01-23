@@ -15,57 +15,60 @@
 #        2025.1.20
 #
 
-OS_NAME := NullPotOS
-OS_VERSION := Beta
+OS_NAME 				:= NullPotOS
+OS_VERSION 				:= Beta
 
-BIOS_DIR := BIOS
-SECURE_DIR := Secure
-INCLUDES_DIR := Includes
-BOOTLOADER_DIR := Bootloader
-CORE_DIR := Core
+BIOS_DIR 				:= BIOS
+SECURE_DIR 				:= Secure
+INCLUDES_DIR 			:= Includes
+BOOTLOADER_DIR 			:= Bootloader
+CORE_DIR 				:= Core
 
-BUILD_DIR := Build
-OBJ_DIR := $(BUILD_DIR)/Object
-IMAGE_DIR := $(BUILD_DIR)/Image
-EFI_BOOT_DIR := $(IMAGE_DIR)/EFI/Boot
-OS_DIR := $(IMAGE_DIR)/$(OS_NAME)
+BUILD_DIR 				:= Build
+OBJ_DIR 				:= $(BUILD_DIR)/Object
+IMAGE_DIR 				:= $(BUILD_DIR)/Image
+EFI_BOOT_DIR 			:= $(IMAGE_DIR)/EFI/Boot
+OS_DIR 					:= $(IMAGE_DIR)/$(OS_NAME)
 
-BOOTLOADER_ENTRY := UefiMain
+BOOTLOADER_ENTRY 		:= UefiMain
 
-PRINT 	:= echo
-CC 		:= gcc
-CXX 	:= g++
+PRINT 					:= echo
+CC 						:= gcc
+CXX 					:= g++
 
-CROSS_CC := x86_64-w64-mingw32-gcc
-CROSS_CXX := x86_64-w64-mingw32-g++
+CROSS_CC 				:= x86_64-w64-mingw32-gcc
+CROSS_CXX 				:= x86_64-w64-mingw32-g++
 
-LD 		:= ld
-SBSIGN := sbsign
-QEMU := qemu-system-x86_64
+LD 						:= ld
+SBSIGN 					:= sbsign
+QEMU 					:= qemu-system-x86_64
 
-CFLAGS := -W -Wall -Wextra -g -O3 -std=c17 -I $(INCLUDES_DIR) -nostdinc -nostdlib -fno-builtin
-CXXFLAGS := -W -Wall -Wextra -g -O3 -std=c++17 -I $(INCLUDES_DIR) -nostdinc -nostdlib -fno-builtin
+CFLAGS 					:= -W -Wall -Wextra -g -O3 -std=c17 -I $(INCLUDES_DIR) -nostdinc -nostdlib -fno-builtin
+CXXFLAGS 				:= -W -Wall -Wextra -g -O3 -std=c++17 -I $(INCLUDES_DIR) -nostdinc -nostdlib -fno-builtin
 
-CROSS_CFLAGS := -I $(INCLUDES_DIR) -std=c17 -g -O3 -Wall -Wextra -e $(BOOTLOADER_ENTRY) -nostdinc -nostdlib -fno-builtin -Wl,--subsystem,10
-CROSS_CXXFLAGS := -I $(INCLUDES_DIR) -std=c++17 -g -O3 -Wall -Wextra -e $(BOOTLOADER_ENTRY) -nostdinc -nostdlib -fno-builtin -Wl,--subsystem,10
+CROSS_CFLAGS 			:= -I $(INCLUDES_DIR) -std=c17 -g -O3 -Wall -Wextra -e $(BOOTLOADER_ENTRY) -nostdinc -nostdlib -fno-builtin -Wl,--subsystem,10
+CROSS_CXXFLAGS 			:= -I $(INCLUDES_DIR) -std=c++17 -g -O3 -Wall -Wextra -e $(BOOTLOADER_ENTRY) -nostdinc -nostdlib -fno-builtin -Wl,--subsystem,10
 
-KERNEL_DIRS := $(CORE_DIR)/Init \
+# Kernel Directory
+KERNEL_DIRS 			:= $(CORE_DIR)/Init \
     $(CORE_DIR)/Hal/Io \
     $(CORE_DIR)/Libs/String \
     $(CORE_DIR)/Libs/Stdlib \
     $(CORE_DIR)/Libs/Math \
     $(CORE_DIR)/Kernel/Graphics/Bmp \
     $(CORE_DIR)/Kernel/Graphics/Font \
+	$(CORE_DIR)/Drivers/Communicate/Serial \
     $(CORE_DIR)/Drivers/View/Gop \
+	$(CORE_DIR)/Drivers/Sound/Beep \
     $(CORE_DIR)/Kernel/Debug/Print \
     $(CORE_DIR)/Kernel/Asm/A20 \
     $(CORE_DIR)/Kernel/Asm/Gdt
 
-KERNEL_SRCS := $(foreach dir,$(KERNEL_DIRS),$(wildcard $(dir)/*.cpp))
+KERNEL_SRCS 			:= $(foreach dir,$(KERNEL_DIRS),$(wildcard $(dir)/*.cpp))
 
-KERNEL_OBJS := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(KERNEL_SRCS))
+KERNEL_OBJS 			:= $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(KERNEL_SRCS))
 
-KERNEL_OBJ_DIRS := $(sort $(dir $(KERNEL_OBJS)))
+KERNEL_OBJ_DIRS 		:= $(sort $(dir $(KERNEL_OBJS)))
 
 .PHONY: Info
 Info:
@@ -99,6 +102,7 @@ Bootloader:
 .PHONY: Secure
 Secure:
 	-@$(SBSIGN) --cert $(SECURE_DIR)/Boot/Certs/Boot.cer --key $(SECURE_DIR)/Boot/Private/Boot.key --output $(EFI_BOOT_DIR)/BootX64.efi $(EFI_BOOT_DIR)/BootX64.efi
+	-@$(SBSIGN) --cert $(SECURE_DIR)/Boot/Certs/Boot.cer --key $(SECURE_DIR)/Boot/Private/Boot.key --output $(OS_DIR)/System/Kernel.elf $(OS_DIR)/System/Kernel.elf
 
 .PHONY: Kernel
 Kernel: $(OS_DIR)/System/Kernel.elf
@@ -113,7 +117,7 @@ Run: all
 .PHONY: Clean
 Clean:
 	@rm -rf $(BUILD_DIR)
-	@$(PRINT) "\033[31mClean\033[0m"				$(BUILD_DIR)
+	@$(PRINT) "\033[31mrm\033[0m"				$(BUILD_DIR)
 
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)

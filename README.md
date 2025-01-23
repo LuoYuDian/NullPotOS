@@ -28,6 +28,16 @@ NullPotOS is a UNIX like operating system, it is UEFI and X86_64 architecture.
 - [ ] TSS
 - [ ] IDT
 
+##### Hal
+
+- [X] IO
+
+##### Drivers
+
+- [X] Serial Port Driver
+- [X] Beep Driver
+- [X] Gop
+
 ## Build and run NullPotOS Project
 
 #### Get ready
@@ -67,24 +77,18 @@ Open your WSL2
 #### Build
 
 ``` Shell
-mingw32-make all
-or
 make all
 ```
 
 If you want to clean the project, you can use the following command
 
 ``` Shell
-mingw32-make Clean
-or
 make Clean
 ```
 
 #### Run
 
 ``` Shell
-mingw32-make Run
-or
 make Run
 ```
 
@@ -109,3 +113,7 @@ NullPotOS is licensed under the [MIT LISENSE](LICENSE.md) -You should see the LI
 [LuoYuDian](https://github.com/LuoYuDian) - Project Founder
 
 [MaxSinoh](https://github.com/MaxSinoh) - Project Developer and Contributor
+
+## Coed line
+
+`117491`
