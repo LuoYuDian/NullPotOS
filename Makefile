@@ -89,6 +89,13 @@ Info:
 	@mkdir -p $(EFI_BOOT_DIR)
 	@$(PRINT) "\033[32mmkdir\033[0m"				$(EFI_BOOT_DIR)
 
+	@mkdir -p $(IMAGE_DIR)/Secure
+	@$(PRINT) "\033[32mmkdir\033[0m"				$(IMAGE_DIR)/Secure
+
+
+	@mkdir -p $(IMAGE_DIR)/Secure/Db
+	@$(PRINT) "\033[32mmkdir\033[0m"				$(IMAGE_DIR)/Secure/Db
+
 	@mkdir -p $(OS_DIR)
 	@$(PRINT) "\033[32mmkdir\033[0m"				$(OS_DIR)
 
@@ -101,8 +108,11 @@ Bootloader:
 
 .PHONY: Secure
 Secure:
-	-@$(SBSIGN) --cert $(SECURE_DIR)/Boot/Certs/Boot.cer --key $(SECURE_DIR)/Boot/Private/Boot.key --output $(EFI_BOOT_DIR)/BootX64.efi $(EFI_BOOT_DIR)/BootX64.efi
-	-@$(SBSIGN) --cert $(SECURE_DIR)/Boot/Certs/Boot.cer --key $(SECURE_DIR)/Boot/Private/Boot.key --output $(OS_DIR)/System/Kernel.elf $(OS_DIR)/System/Kernel.elf
+	-@$(SBSIGN) --key $(SECURE_DIR)/Db/Db.key --cert $(SECURE_DIR)/Db/Db.crt --output $(EFI_BOOT_DIR)/BootX64.efi $(EFI_BOOT_DIR)/BootX64.efi
+	-@$(SBSIGN) --key $(SECURE_DIR)/Db/Db.key --cert $(SECURE_DIR)/Db/Db.crt --output $(OS_DIR)/System/Kernel.elf $(OS_DIR)/System/Kernel.elf
+	@cp -r $(SECURE_DIR)/Db/ $(IMAGE_DIR)/Secure/Db
+	@cp -r $(SECURE_DIR)/Pk/ $(IMAGE_DIR)/Secure/
+	@cp -r $(SECURE_DIR)/Kek/ $(IMAGE_DIR)/Secure/
 
 .PHONY: Kernel
 Kernel: $(OS_DIR)/System/Kernel.elf
